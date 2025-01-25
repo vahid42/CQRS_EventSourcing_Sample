@@ -26,7 +26,11 @@ namespace AccountApi.Repository
             return entity;
         }
 
-        public async Task UpdateAsync(T entity) => _dbSet.Update(entity);
+        public async Task UpdateAsync(T entity)
+        {
+            _dbSet.Update(entity);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task DeleteAsync(Guid id)
         {

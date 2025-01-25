@@ -19,12 +19,15 @@ namespace AccountApi.Services
         {
             var account = await LoadAccountAsync(command.AccountId);
             await account.DepositAsync(command.Amount, eventrepository);
+            await accountrepository.UpdateAsync(account);
+
         }
 
         public async Task WithdrawAsync(WithdrawCommand command)
         {
             var account = await LoadAccountAsync(command.AccountId);
             await account.WithdrawAsync(command.Amount, eventrepository);
+          await  accountrepository.UpdateAsync(account);
         }
 
         public async Task<decimal> GetBalanceAsync(GetBalanceQuery query)
@@ -41,7 +44,7 @@ namespace AccountApi.Services
             return account;
         }
 
-        public async Task<string> Create(CreateCommand createCommand)
+        public async Task<string> CreateAsync(CreateCommand createCommand)
         {
             var account = await (new AccountFactory(eventrepository) { }).CreateAccountAsync(createCommand.Name, createCommand.InitialBalance);
             var result = await accountrepository.AddAsync(account);
