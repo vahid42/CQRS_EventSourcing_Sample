@@ -2,6 +2,7 @@
 using AccountApi.Data;
 using AccountApi.Entities;
 using AccountApi.Repository;
+using AccountApi.Services;
 
 namespace AccountApi
 {
@@ -18,6 +19,7 @@ namespace AccountApi
             builder.Services.AddDbContext<AccountDbContext>();
             builder.Services.AddScoped<IGenericRepository<Account>, GenericRepository<Account>>();
             builder.Services.AddScoped<IGenericRepository<Event>, GenericRepository<Event>>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
 
 

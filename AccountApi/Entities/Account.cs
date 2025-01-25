@@ -24,7 +24,7 @@ namespace AccountApi.Entities
             Balance = initialBalance;
         }
 
-        public async Task<Account> CreateAccountAsync(string name, decimal initialBalance, IGenericRepository<Event> eventStore)
+        public static async Task<Account> CreateAccountAsync(string name, decimal initialBalance, IGenericRepository<Event> eventStore)
         {
             var account = new Account(name, initialBalance);
 

@@ -19,7 +19,12 @@ namespace AccountApi.Repository
 
         public async Task<T> GetByIdAsync(Guid id) => await _dbSet.FindAsync(id);
 
-        public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
+        public async Task<T> AddAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
 
         public async Task UpdateAsync(T entity) => _dbSet.Update(entity);
 
@@ -27,7 +32,11 @@ namespace AccountApi.Repository
         {
             var entity = await GetByIdAsync(id);
             if (entity != null)
+            {
                 _dbSet.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+
         }
 
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
