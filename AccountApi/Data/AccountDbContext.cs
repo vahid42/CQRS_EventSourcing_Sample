@@ -30,16 +30,16 @@ namespace AccountApi.Data
         {
             modelBuilder.Entity<Account>(entity =>
             {
-                entity.ToTable("Accounts"); // متد ToTable باید در اینجا کار کند  
-                entity.HasKey(e => e.Id); // تعریف کلید اصلی  
-                // دیگر تنظیمات  
+                entity.ToTable("Accounts"); 
+                entity.HasKey(e => e.Id); 
+                
             });
 
             modelBuilder.Entity<Event>(entity =>
             {
-                entity.ToTable("Events"); // همینطور برای EventEntity  
-                entity.HasKey(e => e.Id); // تعریف کلید اصلی  
-                // دیگر تنظیمات  
+                entity.ToTable("Events");
+                entity.HasKey(e => e.Id);
+                
             });
 
         }
