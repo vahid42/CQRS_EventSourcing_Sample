@@ -17,12 +17,24 @@ namespace AccountApi.Entities
         public string Name { get; private set; }
 
 
-        public Account(string name, decimal initialBalance)
+        private Account(string name, decimal initialBalance)
         {
             Name = name;
             Id = Guid.NewGuid();
             Balance = initialBalance;
-            ApplyChange(new CreatedEvent { Name = Name });
+        }
+
+        public async Task<Account> CreateAccountAsync(string name, decimal initialBalance, IGenericRepository<Event> eventStore)
+        {
+            var account = new Account(name, initialBalance);
+
+            var createdEvent = new CreatedEvent { Name = name };
+            account.ApplyChange(createdEvent);
+
+            var eventEntity = account.CreateEventEntity(nameof(CreatedEvent), createdEvent);
+            await eventStore.AddAsync(eventEntity);
+
+            return account;
         }
 
         public async Task DepositAsync(decimal amount, IGenericRepository<Event> eventStore)
