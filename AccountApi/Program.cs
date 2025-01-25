@@ -1,4 +1,8 @@
 
+using AccountApi.Data;
+using AccountApi.Entities;
+using AccountApi.Repository;
+
 namespace AccountApi
 {
     public class Program
@@ -11,6 +15,9 @@ namespace AccountApi
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<AccountDbContext>();
+            builder.Services.AddScoped<IGenericRepository<Account>, GenericRepository<Account>>();
+            builder.Services.AddScoped<IGenericRepository<Event>, GenericRepository<Event>>();
 
 
 
