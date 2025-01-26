@@ -1,4 +1,7 @@
 
+using AccountApi.CQRS;
+using AccountApi.CQRS.Comands;
+using AccountApi.CQRS.Comands.CommandHandler;
 using AccountApi.Data;
 using AccountApi.Entities;
 using AccountApi.Repository;
@@ -20,9 +23,8 @@ namespace AccountApi
             builder.Services.AddScoped<IGenericRepository<Account>, GenericRepository<Account>>();
             builder.Services.AddScoped<IGenericRepository<Event>, GenericRepository<Event>>();
             builder.Services.AddScoped<IAccountService, AccountService>();
-
-
-
+            builder.Services.AddCommandHandlers(typeof(Program));
+            builder.Services.AddQueryHandlers(typeof(Program));
 
 
             var app = builder.Build();

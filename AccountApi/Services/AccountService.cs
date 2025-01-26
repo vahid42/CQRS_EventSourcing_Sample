@@ -1,4 +1,5 @@
 ﻿using AccountApi.CQRS;
+using AccountApi.CQRS.Comands;
 using AccountApi.Entities;
 using AccountApi.Repository;
 
@@ -44,11 +45,11 @@ namespace AccountApi.Services
             return account;
         }
 
-        public async Task<string> CreateAsync(CreateCommand createCommand)
+        public async Task<Guid> CreateAsync(CreateCommand createCommand)
         {
             var account = await (new AccountFactory(eventrepository) { }).CreateAccountAsync(createCommand.Name, createCommand.InitialBalance);
             var result = await accountrepository.AddAsync(account);
-            return result.Id.ToString();
+            return result.Id;
         }
     }
 }

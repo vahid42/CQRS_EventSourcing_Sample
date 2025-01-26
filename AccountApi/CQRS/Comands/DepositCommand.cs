@@ -1,9 +1,8 @@
-﻿namespace AccountApi.CQRS
+﻿namespace AccountApi.CQRS.Comands
 {
-    public class WithdrawCommand
+    public class DepositCommand : ICommand<bool>
     {
         public Guid AccountId { get; set; }
         public decimal Amount { get; set; }
-
     }
 }
