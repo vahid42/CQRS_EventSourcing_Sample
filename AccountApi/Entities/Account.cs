@@ -28,7 +28,7 @@ namespace AccountApi.Entities
         {
             var account = new Account(name, initialBalance);
 
-            var createdEvent = new CreatedEvent { Name = name };
+            var createdEvent = new CreatedEvent { Name = name, initialBalance = account.Balance };
             account.ApplyChange(createdEvent);
 
             var eventEntity = account.CreateEventEntity(nameof(CreatedEvent), createdEvent);
@@ -91,6 +91,7 @@ namespace AccountApi.Entities
                 {
                     case CreatedEvent createdEvent:
                         Name = createdEvent.Name;
+                        Balance = createdEvent.initialBalance;
                         break;
                     case DepositedEvent depositedEvent:
                         Balance += depositedEvent.Amount;
