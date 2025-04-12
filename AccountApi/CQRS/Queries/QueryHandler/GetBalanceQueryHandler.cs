@@ -40,7 +40,7 @@ namespace AccountApi.CQRS.Queries.QueryHandler
                         break;
                     case "Withdraw":
                         var withdrawnEvent = JsonSerializer.Deserialize<WithdrawnEvent>(item.EventData);
-                        events.Add(new DepositedEvent() { Amount = withdrawnEvent.Amount, NameOf = withdrawnEvent.NameOf });
+                        events.Add(new WithdrawnEvent() { Amount = withdrawnEvent.Amount, NameOf = withdrawnEvent.NameOf });
                         break;
                     case "Deposit":
                         var depositedEvent = JsonSerializer.Deserialize<DepositedEvent>(item.EventData);

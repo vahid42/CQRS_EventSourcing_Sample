@@ -20,8 +20,8 @@ namespace AccountApi.CQRS.Comands.CommandHandler
         public async Task<Guid> HandlerAsync(CreateCommand request)
         {
             var account = new Account(request.Name, request.InitialBalance);
-            //Adding amount for bonus
-            account.Deposit(1000);
+            if (request.Bonus > 0)
+                account.Deposit(1000);
             var result = await accountrepository.AddAsync(account);
 
             var events = new List<Event>();
@@ -38,7 +38,7 @@ namespace AccountApi.CQRS.Comands.CommandHandler
                 switch (item.NameOf)
                 {
                     case "Account":
-                        @event.EventData = JsonSerializer.Serialize((CreatedEvent)item);                   
+                        @event.EventData = JsonSerializer.Serialize((CreatedEvent)item);
                         break;
                     case "Withdraw":
                         @event.EventData = JsonSerializer.Serialize((WithdrawnEvent)item);
@@ -51,7 +51,7 @@ namespace AccountApi.CQRS.Comands.CommandHandler
 
             }
             await eventrepository.AddAsync(events);
-
+            account.ClearChanges();
             return result.Id;
         }
     }

@@ -15,6 +15,7 @@ namespace AccountApi.Entities
             var @event = new CreatedEvent { Name = name, initialBalance = balance, NameOf = "Account" };
             ApplyChange(@event);
             changes.Add(@event);
+          
         }
         public Guid Id { get; protected set; }
         public decimal Balance { get; protected set; }
@@ -48,7 +49,7 @@ namespace AccountApi.Entities
         }
 
 
-        public void ClearUncommittedChanges() => changes.Clear();
+        public void ClearChanges() => changes.Clear();
 
         private void ApplyChange(EventBase @event)
         {

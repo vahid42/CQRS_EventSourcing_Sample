@@ -24,16 +24,31 @@ namespace AccountApi.CQRS.Comands.CommandHandler
             var events = new List<Event>();
             foreach (var item in account.Changes)
             {
-                events.Add(new Event
+                var @event = new Event
                 {
                     Id = Guid.NewGuid(),
                     OccurredOn = DateTime.Now,
                     AggregateId = account.Id,
-                    EventType = item.NameOf,
-                    EventData = JsonSerializer.Serialize(item)
-                });
+                    EventType = item.NameOf
+                };
+
+                switch (item.NameOf)
+                {
+                    case "Account":
+                        @event.EventData = JsonSerializer.Serialize((CreatedEvent)item);
+                        break;
+                    case "Withdraw":
+                        @event.EventData = JsonSerializer.Serialize((WithdrawnEvent)item);
+                        break;
+                    case "Deposit":
+                        @event.EventData = JsonSerializer.Serialize((DepositedEvent)item);
+                        break;
+                }
+                events.Add(@event);
+
             }
             await eventrepository.AddAsync(events);
+            account.ClearChanges();
             return true;
         }
 
@@ -52,7 +67,7 @@ namespace AccountApi.CQRS.Comands.CommandHandler
                         break;
                     case "Withdraw":
                         var withdrawnEvent = JsonSerializer.Deserialize<WithdrawnEvent>(item.EventData);
-                        events.Add(new DepositedEvent() { Amount = withdrawnEvent.Amount, NameOf = withdrawnEvent.NameOf });
+                        events.Add(new WithdrawnEvent() { Amount = withdrawnEvent.Amount, NameOf = withdrawnEvent.NameOf });
                         break;
                     case "Deposit":
                         var depositedEvent = JsonSerializer.Deserialize<DepositedEvent>(item.EventData);
