@@ -3,8 +3,7 @@ using AccountApi.CQRS.Comands;
 using AccountApi.CQRS.Comands.CommandHandler;
 using AccountApi.CQRS.Queries.QueryHandler;
 using AccountApi.Dtos;
-using AccountApi.Services;
-using Microsoft.AspNetCore.Mvc;
+ using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace AccountApi.Controllers

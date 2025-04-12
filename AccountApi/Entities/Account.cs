@@ -7,83 +7,70 @@ namespace AccountApi.Entities
 {
     public class Account
     {
-        private List<object> _changes = new List<object>();
-        private Account() { }
+        private List<EventBase> changes = new List<EventBase>();
+        public Account() { }
 
-
-
-        public Guid Id { get; private set; }
-        public decimal Balance { get; private set; }
-        public string Name { get; private set; }
-
-
-        private Account(string name, decimal initialBalance)
+        public Account(string name, decimal balance)
         {
-            Name = name;
-            Id = Guid.NewGuid();
-            Balance = initialBalance;
+            var @event = new CreatedEvent { Name = name, initialBalance = balance, NameOf = "Account" };
+            ApplyChange(@event);
+            changes.Add(@event);
         }
+        public Guid Id { get; protected set; }
+        public decimal Balance { get; protected set; }
+        public string Name { get; protected set; }
+        public bool IsActive { get; protected set; }
+        public DateTime Created { get; protected set; }
 
-        public static async Task<Account> CreateAccountAsync(string name, decimal initialBalance, IGenericRepository<Event> eventStore)
-        {
-            var account = new Account(name, initialBalance);
+        public List<EventBase> Changes => changes;
 
-            var createdEvent = new CreatedEvent { Name = name, initialBalance = account.Balance };
-            account.ApplyChange(createdEvent);
 
-            var eventEntity = account.CreateEventEntity(nameof(CreatedEvent), createdEvent);
-            await eventStore.AddAsync(eventEntity);
-
-            return account;
-        }
-
-        public async Task DepositAsync(decimal amount, IGenericRepository<Event> eventStore)
+        public void Deposit(decimal amount)
         {
             if (amount <= 0)
                 throw new ArgumentException("Deposit amount must be greater than zero.");
 
-            Balance += amount;
-            ApplyChange(new DepositedEvent { Amount = amount });
-
-            var eventEntity = CreateEventEntity(nameof(DepositedEvent), new { Amount = amount });
-            await eventStore.AddAsync(eventEntity);
+            var @event = new DepositedEvent { Amount = amount, NameOf = "Deposit" };
+            ApplyChange(@event);
+            changes.Add(@event);
         }
 
-        public async Task WithdrawAsync(decimal amount, IGenericRepository<Event> eventStore)
+        public void Withdraw(decimal amount)
         {
             if (amount <= 0)
                 throw new ArgumentException("Withdrawal amount must be greater than zero.");
             if (amount > Balance)
                 throw new InvalidOperationException("Insufficient funds.");
 
-            Balance -= amount;
-            ApplyChange(new WithdrawnEvent { Amount = amount });
-
-            var eventEntity = CreateEventEntity(nameof(WithdrawnEvent), new { Amount = amount });
-            await eventStore.AddAsync(eventEntity);
+            var @event = new WithdrawnEvent { Amount = amount, NameOf = "Withdraw" };
+            ApplyChange(@event);
+            changes.Add(@event);
         }
 
-        public void ClearUncommittedChanges() => _changes.Clear();
-        public IEnumerable<object> GetChanges() => _changes;
 
-        private void ApplyChange(object @event)
-        {
-            _changes.Add(@event);
-        }
+        public void ClearUncommittedChanges() => changes.Clear();
 
-        private Event CreateEventEntity(string eventType, object eventData)
+        private void ApplyChange(EventBase @event)
         {
-            return new Event
+            switch (@event)
             {
-                Id = Guid.NewGuid(),
-                OccurredOn = DateTime.UtcNow,
-                AggregateId = this.Id,
-                EventType = eventType,
-                EventData = JsonSerializer.Serialize(eventData)
-            };
+                case CreatedEvent createdEvent:
+                    Id = Guid.NewGuid();
+                    Name = createdEvent.Name;
+                    Balance = createdEvent.initialBalance;
+                    IsActive = true;
+                    Created = DateTime.Now;
+                    break;
+                case DepositedEvent depositedEvent:
+                    Balance += depositedEvent.Amount;
+                    break;
+                case WithdrawnEvent withdrawnEvent:
+                    Balance -= withdrawnEvent.Amount;
+                    break;
+            }
         }
 
-        public void LoadFromEvents(IEnumerable<object> events)
+        public void LoadFromEvents(IEnumerable<EventBase> events)
         {
             foreach (var @event in events)
             {

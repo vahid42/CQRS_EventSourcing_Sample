@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccountApi.Migrations
 {
     [DbContext(typeof(AccountDbContext))]
-    [Migration("20250125134850_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250412133350_InitialCreate-1")]
+    partial class InitialCreate1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,12 @@ namespace AccountApi.Migrations
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()

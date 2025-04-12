@@ -30,16 +30,17 @@ namespace AccountApi.Data
         {
             modelBuilder.Entity<Account>(entity =>
             {
-                entity.ToTable("Accounts"); 
-                entity.HasKey(e => e.Id); 
-                
+                entity.ToTable("Accounts");
+                entity.HasKey(e => e.Id);
+                entity.Ignore(e => e.Changes);
+
             });
 
             modelBuilder.Entity<Event>(entity =>
             {
                 entity.ToTable("Events");
                 entity.HasKey(e => e.Id);
-                
+
             });
 
         }

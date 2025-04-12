@@ -45,5 +45,12 @@ namespace AccountApi.Repository
 
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
             => await _dbSet.Where(predicate).ToListAsync();
+
+        public async Task<bool> AddAsync(List<T> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

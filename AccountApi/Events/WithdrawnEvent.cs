@@ -1,6 +1,6 @@
 ﻿namespace AccountApi.Events
 {
-    public class WithdrawnEvent 
+    public class WithdrawnEvent : EventBase 
     {
         public decimal Amount { get; set; }
     }
