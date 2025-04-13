@@ -10,21 +10,21 @@ namespace AccountApi.Entities
         private List<EventBase> changes = new List<EventBase>();
         public Account() { }
 
-        public Account(string name, decimal balance)
-        {
-            var @event = new CreatedEvent { Name = name, initialBalance = balance, NameOf = "Account" };
-            ApplyChange(@event);
-            changes.Add(@event);
-          
-        }
+        
         public Guid Id { get; protected set; }
         public decimal Balance { get; protected set; }
         public string Name { get; protected set; }
         public bool IsActive { get; protected set; }
         public DateTime Created { get; protected set; }
-
         public List<EventBase> Changes => changes;
 
+        public Account(string name, decimal balance)
+        {
+            var @event = new CreatedEvent { Name = name, initialBalance = balance, NameOf = "Account" };
+            ApplyChange(@event);
+            changes.Add(@event);
+
+        }
 
         public void Deposit(decimal amount)
         {

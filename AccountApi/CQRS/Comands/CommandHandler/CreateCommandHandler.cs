@@ -23,36 +23,12 @@ namespace AccountApi.CQRS.Comands.CommandHandler
             if (request.Bonus > 0)
                 account.Deposit(1000);
             var result = await accountrepository.AddAsync(account);
-
-            var events = new List<Event>();
-            foreach (var item in account.Changes)
-            {
-                var @event = new Event
-                {
-                    Id = Guid.NewGuid(),
-                    OccurredOn = DateTime.Now,
-                    AggregateId = account.Id,
-                    EventType = item.NameOf
-                };
-
-                switch (item.NameOf)
-                {
-                    case "Account":
-                        @event.EventData = JsonSerializer.Serialize((CreatedEvent)item);
-                        break;
-                    case "Withdraw":
-                        @event.EventData = JsonSerializer.Serialize((WithdrawnEvent)item);
-                        break;
-                    case "Deposit":
-                        @event.EventData = JsonSerializer.Serialize((DepositedEvent)item);
-                        break;
-                }
-                events.Add(@event);
-
-            }
+            List<Event> events = Convertor.ConvertAccountToEvent(account);
             await eventrepository.AddAsync(events);
             account.ClearChanges();
             return result.Id;
         }
+
+        
     }
 }
