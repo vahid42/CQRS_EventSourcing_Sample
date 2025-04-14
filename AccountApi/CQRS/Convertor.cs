@@ -48,15 +48,34 @@ namespace AccountApi.CQRS
                 {
                     case "Account":
                         var createdEvent = JsonSerializer.Deserialize<CreatedEvent>(item.EventData);
-                        events.Add(new CreatedEvent() { initialBalance = createdEvent.initialBalance, Name = createdEvent.Name, NameOf = createdEvent.NameOf });
+                        events.Add(new CreatedEvent()
+                        {
+                            initialBalance = createdEvent.initialBalance,
+                            Name = createdEvent.Name,
+                            NameOf = createdEvent.NameOf,
+                            Version = createdEvent.Version,
+                            Created = createdEvent.Created,
+                            IsActive = createdEvent.IsActive,
+                            Id = createdEvent.Id
+                        });
                         break;
                     case "Withdraw":
                         var withdrawnEvent = JsonSerializer.Deserialize<WithdrawnEvent>(item.EventData);
-                        events.Add(new WithdrawnEvent() { Amount = withdrawnEvent.Amount, NameOf = withdrawnEvent.NameOf });
+                        events.Add(new WithdrawnEvent()
+                        {
+                            Amount = withdrawnEvent.Amount,
+                            NameOf = withdrawnEvent.NameOf,
+                            Version = withdrawnEvent.Version
+                        });
                         break;
                     case "Deposit":
                         var depositedEvent = JsonSerializer.Deserialize<DepositedEvent>(item.EventData);
-                        events.Add(new DepositedEvent() { Amount = depositedEvent.Amount, NameOf = depositedEvent.NameOf });
+                        events.Add(new DepositedEvent()
+                        {
+                            Amount = depositedEvent.Amount,
+                            NameOf = depositedEvent.NameOf,
+                            Version = depositedEvent.Version
+                        });
                         break;
                 }
             }

@@ -46,30 +46,13 @@ namespace AccountApi.CQRS.Queries.QueryHandler
             foreach (var account in accounts)
             {
                 var items = await eventrepository.FindAsync(c => c.AggregateId == account.Id);
-                var events = new List<EventBase>();
-                foreach (var item in items.OrderBy(e => e.OccurredOn))
-                {
-                    switch (item.EventType)
-                    {
-                        case "Account":
-                            var createdEvent = JsonSerializer.Deserialize<CreatedEvent>(item.EventData);
-                            events.Add(new CreatedEvent() { initialBalance = createdEvent.initialBalance, Name = createdEvent.Name, NameOf = createdEvent.NameOf });
-                            break;
-                        case "Withdraw":
-                            var withdrawnEvent = JsonSerializer.Deserialize<WithdrawnEvent>(item.EventData);
-                            events.Add(new WithdrawnEvent() { Amount = withdrawnEvent.Amount, NameOf = withdrawnEvent.NameOf });
-                            break;
-                        case "Deposit":
-                            var depositedEvent = JsonSerializer.Deserialize<DepositedEvent>(item.EventData);
-                            events.Add(new DepositedEvent() { Amount = depositedEvent.Amount, NameOf = depositedEvent.NameOf });
-                            break;
-                    }
-                }
+                List<EventBase> events = Convertor.ConvertEventBaseToEvent(items);
                 account.LoadFromEvents(events);
             }
 
 
             return accounts;
         }
+
     }
 }
