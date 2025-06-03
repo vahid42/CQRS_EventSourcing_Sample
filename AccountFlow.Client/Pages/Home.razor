@@ -1,0 +1,172 @@
+﻿@page "/"
+@inject NavigationManager Navigation
+
+<PageTitle>سیستم مدیریت حساب‌ها</PageTitle>
+
+<style>
+    .home-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        text-align: center;
+        font-family: 'Vazir', sans-serif;
+        direction: rtl;
+        padding: 2rem;
+    }
+
+    .welcome-title {
+        font-size: 2.5rem;
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-subtitle {
+        font-size: 1.2rem;
+        color: #64748b;
+        max-width: 600px;
+        line-height: 1.8;
+        margin-bottom: 2.5rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 2rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .primary-btn {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+    }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+        }
+
+    .secondary-btn {
+        background: white;
+        color: #4f46e5;
+        border: 2px solid #e0e7ff;
+    }
+
+        .secondary-btn:hover {
+            background: #f8fafc;
+            transform: translateY(-3px);
+        }
+
+    .btn-icon {
+        margin-right: 0.5rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 4rem;
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s;
+        text-align: right;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+    .feature-icon {
+        font-size: 2rem;
+        color: #4f46e5;
+        margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+        font-size: 1.2rem;
+        color: #1e293b;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .feature-desc {
+        color: #64748b;
+        line-height: 1.7;
+    }
+</style>
+
+<div class="home-container">
+    <h1 class="welcome-title">به سیستم مدیریت حساب‌ها خوش آمدید</h1>
+    <p class="welcome-subtitle">
+        یک سیستم حرفه‌ای برای مدیریت حساب‌های بانکی با قابلیت‌های پیشرفته و رابط کاربری ساده
+    </p>
+
+    <div class="action-buttons">
+        <a href="create-account" class="action-btn primary-btn">
+            <i class="fas fa-plus-circle btn-icon"></i>
+            ایجاد حساب جدید
+        </a>
+        <a href="accounts" class="action-btn secondary-btn">
+            <i class="fas fa-wallet btn-icon"></i>
+            مشاهده حساب‌ها
+        </a>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="feature-title">امنیت بالا</h3>
+            <p class="feature-desc">
+                با استفاده از آخرین تکنولوژی‌های امنیتی، اطلاعات حساب‌های شما کاملاً محافظت می‌شود
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h3 class="feature-title">سریع و کارآمد</h3>
+            <p class="feature-desc">
+                انجام عملیات بانکی در کمترین زمان ممکن با کارایی فوق‌العاده
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="feature-title">گزارش‌های پیشرفته</h3>
+            <p class="feature-desc">
+                دریافت گزارش‌های تحلیلی از تراکنش‌ها و وضعیت حساب‌ها
+            </p>
+        </div>
+    </div>
+</div>

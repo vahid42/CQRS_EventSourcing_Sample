@@ -1,0 +1,81 @@
+﻿<div class="nav-item px-3">
+    <NavLink class="nav-link" href="/">
+        <span class="oi oi-plus" aria-hidden="true"></span>
+        <span class="nav-text">خانه</span>
+    </NavLink>
+</div>
+<div class="nav-item px-3">
+    <NavLink class="nav-link" href="create-account">
+        <span class="oi oi-plus" aria-hidden="true"></span>
+        <span class="nav-text">ایجاد حساب جدید</span>
+    </NavLink>
+</div>
+<div class="nav-item px-3">
+    <NavLink class="nav-link" href="accounts">
+        <span class="oi oi-list" aria-hidden="true"></span>
+        <span class="nav-text">لیست حساب‌ها</span>
+    </NavLink>
+</div>
+@* <div class="nav-menu">
+    <div class="nav-item">
+        <NavLink class="nav-link" href="create-account" activeclass="active">
+            <span class="nav-icon">
+                <i class="fas fa-plus-circle"></i>
+            </span>
+            <span class="nav-text">ایجاد حساب جدید</span>
+        </NavLink>
+    </div>
+    <div class="nav-item">
+        <NavLink class="nav-link" href="accounts" activeclass="active">
+            <span class="nav-icon">
+                <i class="fas fa-wallet"></i>
+            </span>
+            <span class="nav-text">لیست حساب‌ها</span>
+        </NavLink>
+    </div>
+</div> *@
+
+<style>
+    .nav-menu {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(79, 70, 229, 0.2);
+    }
+
+    .nav-item {
+        position: relative;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-family: 'Vazir', sans-serif;
+    }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.25);
+            font-weight: 500;
+        }
+
+    .nav-icon {
+        margin-left: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .nav-text {
+        font-size: 0.95rem;
+    }
+</style>

@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountApi", "AccountApi\AccountApi.csproj", "{C5E0A9E3-B74C-461B-980E-5920FCB62562}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountFlow.Api.V2", "AccountFlow.Api.V2\AccountFlow.Api.V2.csproj", "{C5E0A9E3-B74C-461B-980E-5920FCB62562}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountFlow.Api.V1", "AccountFlow.Api.V1\AccountFlow.Api.V1.csproj", "{D1491078-06C9-4274-B702-BE7ADF7B4DDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountFlow.Client", "AccountFlow.Client\AccountFlow.Client.csproj", "{99D53C27-D63D-4C13-8616-EE00619BB7F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{C5E0A9E3-B74C-461B-980E-5920FCB62562}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5E0A9E3-B74C-461B-980E-5920FCB62562}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5E0A9E3-B74C-461B-980E-5920FCB62562}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1491078-06C9-4274-B702-BE7ADF7B4DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1491078-06C9-4274-B702-BE7ADF7B4DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1491078-06C9-4274-B702-BE7ADF7B4DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1491078-06C9-4274-B702-BE7ADF7B4DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99D53C27-D63D-4C13-8616-EE00619BB7F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99D53C27-D63D-4C13-8616-EE00619BB7F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99D53C27-D63D-4C13-8616-EE00619BB7F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99D53C27-D63D-4C13-8616-EE00619BB7F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

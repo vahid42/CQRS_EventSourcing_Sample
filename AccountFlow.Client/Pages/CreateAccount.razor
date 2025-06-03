@@ -1,0 +1,207 @@
+﻿@page "/create-account"
+@inject IAccountService AccountService
+@inject NavigationManager Navigation
+
+<style>
+    /* فونت فارسی */
+    @@font-face {
+        font-family: 'Vazir';
+        src: url('/fonts/Vazir.woff') format('woff');
+    }
+
+    .account-creation {
+        font-family: 'Vazir', Tahoma, sans-serif;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .account-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #2c3e50;
+    }
+
+    .elegant-form {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 2.5rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-floating {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 1rem 3.5rem 1rem 1rem;
+        font-size: 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+        text-align: right;
+    }
+
+        .form-input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            outline: none;
+            background-color: white;
+        }
+
+    .form-floating label {
+        position: absolute;
+        top: -10px;
+        right: 1rem;
+        font-size: 0.85rem;
+        background: white;
+        padding: 0 0.5rem;
+        color: #4f46e5;
+        transition: all 0.3s;
+        height:30%;
+        left:226px;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+    }
+
+    .submit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, #4338ca, #6d28d9);
+        }
+
+        .submit-btn i {
+            margin-right: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .submit-btn:hover i {
+            transform: translateX(-5px);
+        }
+
+    .validation-summary {
+        color: #ef4444;
+        background: #fee2e2;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #ef4444;
+    }
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .loading-spinner {
+        font-size: 3rem;
+        color: #4f46e5;
+    }
+</style>
+
+<div class="account-creation">
+    <div class="account-header">
+        <h3>ایجاد حساب جدید</h3>
+        <p class="text-muted">اطلاعات حساب خود را وارد نمایید</p>
+    </div>
+
+    <EditForm Model="@Request" OnValidSubmit="@HandleValidSubmit" class="elegant-form">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="validation-summary" />
+
+        <div class="form-floating">
+            <InputText id="name" @bind-Value="@Request.Name" class="form-input" placeholder=" " />
+            <label for="name">نام حساب</label>
+            <span class="input-icon"><i class="fas fa-user"></i></span>
+        </div>
+
+        <div class="form-floating">
+            <InputNumber id="amount" @bind-Value="@Request.Amount" class="form-input" placeholder=" " />
+            <label for="amount">مبلغ اولیه (تومان)</label>
+            <span class="input-icon"><i class="fas fa-wallet"></i></span>
+        </div>
+
+        <button type="submit" class="submit-btn" disabled="@isSubmitting">
+            @if (isSubmitting)
+            {
+                <span>در حال ایجاد حساب...</span>
+                <i class="fas fa-spinner fa-spin"></i>
+            }
+            else
+            {
+                <span>ایجاد حساب</span>
+                <i class="fas fa-arrow-left"></i>
+            }
+        </button>
+    </EditForm>
+</div>
+
+@if (showLoading)
+{
+    <div class="loading-overlay">
+        <div class="text-center">
+            <i class="fas fa-check-circle loading-spinner"></i>
+            <p class="mt-3">حساب با موفقیت ایجاد شد!</p>
+        </div>
+    </div>
+}
+
+@code {
+    private RequestAccuont Request { get; set; } = new();
+    private bool isSubmitting = false;
+    private bool showLoading = false;
+
+    private async Task HandleValidSubmit()
+    {
+        isSubmitting = true;
+
+        try
+        {
+            var result = await AccountService.CreateAsync(Request);
+            showLoading = true;
+
+            await Task.Delay(1500); // نمایش پیام موفقیت به مدت 1.5 ثانیه
+            Navigation.NavigateTo($"/account/{result.AccuontId}");
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+}
