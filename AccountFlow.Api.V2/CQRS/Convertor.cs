@@ -44,8 +44,7 @@ namespace AccountFlow.Api.V2.CQRS
         public static List<EventBase> ConvertEventBaseToEvent(IEnumerable<Event> items)
         {
             var events = new List<EventBase>();
-            foreach (var item in items.OrderBy(e => e.OccurredOn)
-                )
+            foreach (var item in items.OrderBy(e => e.OccurredOn))
             {
                 switch (item.EventType)
                 {
@@ -60,10 +59,6 @@ namespace AccountFlow.Api.V2.CQRS
                             Created = createdEvent.Created,
                             IsActive = createdEvent.IsActive,
                             Id = createdEvent.Id,
-                            RowVersion=createdEvent.RowVersion
-                            
-
-
                         });
                         break;
                     case "Withdraw":
@@ -73,7 +68,6 @@ namespace AccountFlow.Api.V2.CQRS
                             Amount = withdrawnEvent.Amount,
                             NameOf = withdrawnEvent.NameOf,
                             Version = withdrawnEvent.Version,
-                            RowVersion = withdrawnEvent.RowVersion
                         });
                         break;
                     case "Deposit":
@@ -83,7 +77,6 @@ namespace AccountFlow.Api.V2.CQRS
                             Amount = depositedEvent.Amount,
                             NameOf = depositedEvent.NameOf,
                             Version = depositedEvent.Version,
-                            RowVersion = depositedEvent.RowVersion
                         });
                         break;
                 }
@@ -106,12 +99,6 @@ namespace AccountFlow.Api.V2.CQRS
             };
 
         }
-        public static Account ConvertSnapShotToAccount(AccountSnapshot account)
-        {
 
-            return new Account(account.Name, account.Balance);
-             
-
-        }
     }
 }

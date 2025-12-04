@@ -27,7 +27,8 @@ namespace AccountFlow.Api.V2.CQRS.Comands.CommandHandler
             var account = await LoadAccount.LoadAccountAsync(request.AccountId, eventrepository, snapshotRepository);
             account.Withdraw(request.Amount);
             List<Event> events = Convertor.ConvertAccountToEvent(account);
-            await eventrepository.AppendEventsAsync(request.AccountId, events, account.CurrentVersion - account.Changes.Count);// expectedVersion = نسخه قبل از تغییرات
+            await eventrepository.AppendEventsAsync(request.AccountId, events, 
+                account.CurrentVersion - account.Changes.Count);// expectedVersion = نسخه قبل از تغییرات
             await SaveSnapshotIfNeeded(account);
             account.ClearChanges();
             return true;

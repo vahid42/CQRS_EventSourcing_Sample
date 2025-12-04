@@ -32,8 +32,6 @@ namespace AccountFlow.Api.V2.Entities
                 Version = 1,
                 Created = DateTime.Now,
                 IsActive = true,
-                RowVersion = Guid.NewGuid(),
-
             };
             ApplyChange(@event);
             changes.Add(@event);

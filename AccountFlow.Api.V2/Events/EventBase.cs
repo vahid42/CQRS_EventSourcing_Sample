@@ -4,7 +4,6 @@
     {
         public string NameOf { get; set; }
         public int Version { get; set; }  
-        public Guid RowVersion { get; set; }
 
     }
 }

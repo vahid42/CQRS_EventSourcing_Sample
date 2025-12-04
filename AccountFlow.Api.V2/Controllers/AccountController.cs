@@ -18,7 +18,7 @@ namespace AccountFlow.Api.V2.Controllers
         public async Task<IActionResult> Create([FromBody] RequestAccuont request, [FromServices] ICommandHandler<CreateCommand, Guid> command)
         {
             var dd = await command.HandlerAsync(new CreateCommand() { InitialBalance = request.Amount, Name = request.Name, Bonus = request.Bonus });
-
+            
             return Ok(new ResponseAccuont() { Balance = request.Amount + request.Bonus, Name = request.Name, AccuontId = dd });
         }
 

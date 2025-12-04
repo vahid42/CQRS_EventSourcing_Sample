@@ -9,7 +9,6 @@
         public bool IsActive { get; set; }
         public DateTime Created { get; set; }
         public int CurrentVersion { get; set; }
-        public Guid RowVersion { get; set; }
 
     }
 }

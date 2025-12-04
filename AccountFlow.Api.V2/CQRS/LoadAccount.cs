@@ -6,7 +6,9 @@ namespace AccountFlow.Api.V2.CQRS
 {
     public static class LoadAccount
     {
-        public static async Task<Account> LoadAccountAsync(Guid accountId, IEventRepository eventrepository, ISnapshotRepository snapshotRepository)
+        public static async Task<Account> LoadAccountAsync(Guid accountId, 
+            IEventRepository eventrepository, 
+            ISnapshotRepository snapshotRepository)
         {
             Account account = new Account();
             AccountSnapshot accountSnapshot = new AccountSnapshot();
