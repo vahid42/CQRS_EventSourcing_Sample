@@ -163,10 +163,18 @@ else
             <h4 class="form-title">واریز به حساب</h4>
             <EditForm Model="@depositRequest" OnValidSubmit="@HandleDeposit">
                 <InputNumber class="form-control" @bind-Value="@depositRequest.Amount" placeholder="مبلغ واریز را وارد کنید" />
-                <button type="submit" class="btn btn-deposit">
-                    واریز وجه
-                    <i class="fas fa-arrow-down btn-icon"></i>
-                </button>
+                        <button type="submit" class="btn btn-withdraw" disabled="@(isProcessing || account == null || isCooldownActive)">
+                    @if (isProcessingWithdraw)
+                    {
+                                <i class="fas fa-spinner fa-spin btn-icon"></i>
+                    }
+                    else
+                    {
+                                <i class="fas fa-arrow-up btn-icon"></i>
+                    }
+                             واریز وجه
+                    </button>
+                 
             </EditForm>
         </div>
 
@@ -176,9 +184,16 @@ else
             <h4 class="form-title">برداشت از حساب</h4>
             <EditForm Model="@withdrawRequest" OnValidSubmit="@HandleWithdraw">
                 <InputNumber class="form-control" @bind-Value="@withdrawRequest.Amount" placeholder="مبلغ برداشت را وارد کنید" />
-                <button type="submit" class="btn btn-withdraw">
+                    <button type="submit" class="btn btn-withdraw" disabled="@(isProcessing || account == null || isCooldownActive)">
+                    @if (isProcessingWithdraw)
+                    {
+                        <i class="fas fa-spinner fa-spin btn-icon"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-arrow-up btn-icon"></i>
+                    }
                     برداشت وجه
-                    <i class="fas fa-arrow-up btn-icon"></i>
                 </button>
             </EditForm>
         </div>
@@ -192,8 +207,14 @@ else
     private AccountDto account;
     private RequestDepositWithdraw depositRequest = new();
     private RequestDepositWithdraw withdrawRequest = new();
+    private bool isProcessingDeposit;
+    private bool isProcessingWithdraw;
+    private bool isProcessing => isProcessingDeposit || isProcessingWithdraw;
+    private bool isCooldownActive;
+    private Timer cooldownTimer;
+    private int cooldownDuration = 1000; // 1 ثانیه
 
-    protected override async Task OnInitializedAsync()
+protected override async Task OnInitializedAsync()
     {
         account = await AccountService.GetAsync(Guid.Parse(AccountId));
         depositRequest.AccountId = Guid.Parse(AccountId);
@@ -202,13 +223,46 @@ else
 
     private async Task HandleDeposit()
     {
-        account = await AccountService.DepositAsync(depositRequest);
-        depositRequest.Amount = 0;
+         isProcessingDeposit = true;
+        try
+        {
+            account = await AccountService.DepositAsync(depositRequest);
+            depositRequest.Amount = 0;
+            await StartCooldown();
+        }
+        finally
+        {
+            isProcessingDeposit = false;
+        }
     }
 
     private async Task HandleWithdraw()
     {
-        account = await AccountService.WithdrawAsync(withdrawRequest);
-        withdrawRequest.Amount = 0;
+        isProcessingWithdraw = true;
+        try
+        {
+            account = await AccountService.WithdrawAsync(withdrawRequest);
+            withdrawRequest.Amount = 0;
+            await StartCooldown();
+        }
+        finally
+        {
+            isProcessingWithdraw = false;
+        }
+    }
+    private async Task StartCooldown()
+    {
+        isCooldownActive = true;
+        StateHasChanged(); // برای رندر مجدد کامپوننت
+
+        await Task.Delay(cooldownDuration);
+
+        isCooldownActive = false;
+        StateHasChanged(); // برای رندر مجدد کامپوننت
+    }
+
+    public void Dispose()
+    {
+        cooldownTimer?.Dispose();
     }
 }
